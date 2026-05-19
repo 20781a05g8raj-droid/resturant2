@@ -1,20 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Spice - Fine Indian Dining</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
-
-    <!-- AOS Animations -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
-
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Royal Spice - Fine Indian Dining</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Font Awesome -->
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+<!-- AOS Animations -->
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/>
+<style>
         /* ==================== CSS VARIABLES ==================== */
         :root {
             --black: #0a0a0a;
@@ -2000,1352 +1997,1521 @@
             background-position: right 15px center;
             padding-right: 40px;
         }
+    
+        /* ==================== CART SIDEBAR & BUTTONS ==================== */
+        .menu-card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(212,175,55,0.2);
+        }
+        
+        .btn-buy-now, .btn-add-cart {
+            flex: 1;
+            padding: 8px 5px;
+            border: none;
+            border-radius: 3px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-buy-now {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--black);
+        }
+
+        .btn-buy-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212,175,55,0.4);
+        }
+
+        .btn-add-cart {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+
+        .btn-add-cart:hover {
+            background: rgba(212,175,55,0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-cart-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #cart-count, #mobile-cart-count {
+            background: var(--red-light);
+            color: var(--white);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .mobile-cart-btn {
+            background: transparent;
+            color: var(--gold) !important;
+            padding: 12px 35px;
+            border: 1px solid var(--gold);
+            border-radius: 3px;
+            font-size: 1rem !important;
+            font-family: var(--font-body) !important;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 100%;
+            max-width: 350px;
+            height: 100vh;
+            background: var(--darker);
+            z-index: 10000;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(212,175,55,0.2);
+            box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .cart-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(212,175,55,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-family: var(--font-heading);
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--gray-light);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .close-cart:hover {
+            color: var(--gold);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid rgba(212,175,55,0.1);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: var(--gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background: rgba(212,175,55,0.2);
+            color: var(--gold);
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .qty-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .cart-item-qty {
+            color: var(--white);
+            font-size: 0.9rem;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(212,175,55,0.2);
+            background: rgba(10,10,10,0.95);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--white);
+            font-family: var(--font-heading);
+        }
+
+        .cart-total span:last-child {
+            color: var(--gold);
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 15px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-checkout:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+        
+        .empty-cart-msg {
+            color: var(--gray);
+            text-align: center;
+            margin-top: 50px;
+            font-style: italic;
+        }
+
     </style>
 </head>
 <body>
-
-    <!-- ==================== PRELOADER ==================== -->
-    <div id="preloader">
-        <div class="preloader-logo">Royal <span>Spice</span></div>
-        <div class="preloader-sub">Fine Indian Dining</div>
-        <div class="preloader-spinner"></div>
-        <div class="preloader-dots">
-            <span></span><span></span><span></span>
-        </div>
-    </div>
-
-    <!-- ==================== NAVBAR ==================== -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a class="nav-logo" href="#home" onclick="scrollToSection('home')">
-                <span class="nav-logo-main">Royal Spice</span>
-                <span class="nav-logo-sub">Fine Indian Dining</span>
-            </a>
-
-            <ul class="nav-menu">
-                <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
-                <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
-                <li><a href="#menu" onclick="scrollToSection('menu')">Menu</a></li>
-                <li><a href="#gallery" onclick="scrollToSection('gallery')">Gallery</a></li>
-                <li><a href="#reservations" onclick="scrollToSection('reservations')">Reservations</a></li>
-                <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
-                <li><a href="#reservations" onclick="scrollToSection('reservations')" class="nav-reserve-btn">Book a Table</a></li>
-            </ul>
-
-            <div class="hamburger" id="hamburger">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#home" onclick="closeMobileMenu(); scrollToSection('home')">Home</a>
-        <a href="#about" onclick="closeMobileMenu(); scrollToSection('about')">About</a>
-        <a href="#menu" onclick="closeMobileMenu(); scrollToSection('menu')">Menu</a>
-        <a href="#gallery" onclick="closeMobileMenu(); scrollToSection('gallery')">Gallery</a>
-        <a href="#reservations" onclick="closeMobileMenu(); scrollToSection('reservations')">Reservations</a>
-        <a href="#contact" onclick="closeMobileMenu(); scrollToSection('contact')">Contact</a>
-        <a href="#reservations" onclick="closeMobileMenu(); scrollToSection('reservations')" class="mobile-reserve-btn">Book a Table</a>
-    </div>
-
-    <!-- ==================== HERO SECTION ==================== -->
-    <section id="home">
-        <div class="hero-parallax" id="heroParallax"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-pattern"></div>
-
-        <div class="hero-decoration hero-deco-1"></div>
-        <div class="hero-decoration hero-deco-2"></div>
-        <div class="hero-decoration hero-deco-3"></div>
-
-        <div class="hero-content">
-            <div class="hero-badge">Est. 2010 • New Delhi</div>
-            <h1 class="hero-title">
+<!-- ==================== PRELOADER ==================== -->
+<div id="preloader">
+<div class="preloader-logo">Royal <span>Spice</span></div>
+<div class="preloader-sub">Fine Indian Dining</div>
+<div class="preloader-spinner"></div>
+<div class="preloader-dots">
+<span></span><span></span><span></span>
+</div>
+</div>
+<!-- ==================== NAVBAR ==================== -->
+<nav id="navbar">
+<div class="nav-container">
+<a class="nav-logo" href="#home" onclick="scrollToSection('home')">
+<span class="nav-logo-main">Royal Spice</span>
+<span class="nav-logo-sub">Fine Indian Dining</span>
+</a>
+<ul class="nav-menu">
+<li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+<li><a href="#about" onclick="scrollToSection('about')">About</a></li>
+<li><a href="#menu" onclick="scrollToSection('menu')">Menu</a></li>
+<li><a href="#gallery" onclick="scrollToSection('gallery')">Gallery</a></li>
+<li><a href="#reservations" onclick="scrollToSection('reservations')">Reservations</a></li>
+<li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
+<li><a class="nav-reserve-btn" href="#reservations" onclick="scrollToSection('reservations')">Book a Table</a></li>
+<li><a class="nav-cart-btn" href="#" onclick="event.preventDefault(); toggleCart();"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count">0</span></a></li></ul>
+<div class="hamburger" id="hamburger">
+<span></span><span></span><span></span>
+</div>
+</div>
+</nav>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+<a href="#home" onclick="closeMobileMenu(); scrollToSection('home')">Home</a>
+<a href="#about" onclick="closeMobileMenu(); scrollToSection('about')">About</a>
+<a href="#menu" onclick="closeMobileMenu(); scrollToSection('menu')">Menu</a>
+<a href="#gallery" onclick="closeMobileMenu(); scrollToSection('gallery')">Gallery</a>
+<a href="#reservations" onclick="closeMobileMenu(); scrollToSection('reservations')">Reservations</a>
+<a href="#contact" onclick="closeMobileMenu(); scrollToSection('contact')">Contact</a>
+<a class="mobile-reserve-btn" href="#reservations" onclick="closeMobileMenu(); scrollToSection('reservations')">Book a Table</a>
+<a class="mobile-cart-btn" href="#" onclick="event.preventDefault(); closeMobileMenu(); toggleCart();"><i class="fas fa-shopping-cart"></i> Cart <span id="mobile-cart-count">0</span></a></div>
+<!-- ==================== HERO SECTION ==================== -->
+<section id="home">
+<div class="hero-parallax" id="heroParallax"></div>
+<div class="hero-overlay"></div>
+<div class="hero-pattern"></div>
+<div class="hero-decoration hero-deco-1"></div>
+<div class="hero-decoration hero-deco-2"></div>
+<div class="hero-decoration hero-deco-3"></div>
+<div class="hero-content">
+<div class="hero-badge">Est. 2010 • New Delhi</div>
+<h1 class="hero-title">
                 Experience Royal
                 <span class="gold-text">Indian Cuisine</span>
-            </h1>
-            <p class="hero-subtitle">Where Tradition Meets Luxury</p>
-            <p class="hero-desc">Embark on an extraordinary culinary journey through the rich tapestry of authentic Indian flavors, crafted with royal precision and presented with timeless elegance.</p>
-            <div class="hero-buttons">
-                <a href="#menu" onclick="scrollToSection('menu')" class="btn-primary">
-                    <i class="fas fa-utensils"></i> View Our Menu
+</h1>
+<p class="hero-subtitle">Where Tradition Meets Luxury</p>
+<p class="hero-desc">Embark on an extraordinary culinary journey through the rich tapestry of authentic Indian flavors, crafted with royal precision and presented with timeless elegance.</p>
+<div class="hero-buttons">
+<a class="btn-primary" href="#menu" onclick="scrollToSection('menu')">
+<i class="fas fa-utensils"></i> View Our Menu
                 </a>
-                <a href="#reservations" onclick="scrollToSection('reservations')" class="btn-secondary">
-                    <i class="fas fa-calendar-check"></i> Reserve a Table
+<a class="btn-secondary" href="#reservations" onclick="scrollToSection('reservations')">
+<i class="fas fa-calendar-check"></i> Reserve a Table
                 </a>
-            </div>
-        </div>
-
-        <div class="hero-scroll" onclick="scrollToSection('about')">
-            <span class="scroll-text">Scroll Down</span>
-            <div class="scroll-line"></div>
-        </div>
-    </section>
-
-    <!-- Awards Banner -->
-    <div class="awards-banner">
-        <div class="awards-scroll" id="awardsScroll">
-            <div class="awards-item"><i class="fas fa-award"></i> Best Indian Restaurant 2024</div>
-            <div class="awards-item"><i class="fas fa-star"></i> Michelin Recommended</div>
-            <div class="awards-item"><i class="fas fa-crown"></i> Royal Hospitality Award</div>
-            <div class="awards-item"><i class="fas fa-certificate"></i> FSSAI Certified</div>
-            <div class="awards-item"><i class="fas fa-trophy"></i> India's Top 50 Restaurants</div>
-            <div class="awards-item"><i class="fas fa-medal"></i> Heritage Cuisine Excellence</div>
-            <div class="awards-item"><i class="fas fa-award"></i> Best Indian Restaurant 2024</div>
-            <div class="awards-item"><i class="fas fa-star"></i> Michelin Recommended</div>
-            <div class="awards-item"><i class="fas fa-crown"></i> Royal Hospitality Award</div>
-            <div class="awards-item"><i class="fas fa-certificate"></i> FSSAI Certified</div>
-            <div class="awards-item"><i class="fas fa-trophy"></i> India's Top 50 Restaurants</div>
-            <div class="awards-item"><i class="fas fa-medal"></i> Heritage Cuisine Excellence</div>
-        </div>
-    </div>
-
-    <!-- ==================== ABOUT SECTION ==================== -->
-    <section id="about">
-        <div class="about-bg-pattern"></div>
-        <div class="container">
-            <div class="text-center" data-aos="fade-up">
-                <span class="section-tag">Our Heritage</span>
-                <h2 class="section-title">A Legacy of <span>Royal Flavors</span></h2>
-                <div class="section-divider"><span class="divider-icon">✦</span></div>
-            </div>
-
-            <div class="about-grid">
-                <div class="about-image-wrapper" data-aos="fade-right" data-aos-duration="1000">
-                    <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80" alt="Royal Spice Restaurant Interior" class="about-main-img">
-                    <div class="about-img-border"></div>
-                    <div class="about-year-badge">
-                        <span class="year">14+</span>
-                        <span class="year-text">Years of</span>
-                        <span class="year-text">Excellence</span>
-                    </div>
-                </div>
-
-                <div class="about-content" data-aos="fade-left" data-aos-duration="1000">
-                    <span class="section-tag">Our Story</span>
-                    <h2 class="section-title">Crafting Culinary <span>Masterpieces</span> Since 2010</h2>
-                    <p class="about-text">Royal Spice was born from a passionate vision to preserve and celebrate the majestic culinary traditions of India. Founded in the heart of New Delhi, we have spent over a decade perfecting the art of authentic Indian cuisine.</p>
-                    <p class="about-text">Our journey began with a simple promise — to serve every guest with the warmth of Indian hospitality and the grandeur of royal cuisine. From the fragrant kitchens of Lucknow to the spice markets of Kerala, every dish on our menu tells a story.</p>
-
-                    <div class="about-features">
-                        <div class="about-feature">
-                            <div class="about-feature-icon"><i class="fas fa-fire-alt"></i></div>
-                            <div class="about-feature-text">
-                                <h4>Authentic Tandoor</h4>
-                                <p>Clay oven perfection</p>
-                            </div>
-                        </div>
-                        <div class="about-feature">
-                            <div class="about-feature-icon"><i class="fas fa-leaf"></i></div>
-                            <div class="about-feature-text">
-                                <h4>Fresh Ingredients</h4>
-                                <p>Farm to table daily</p>
-                            </div>
-                        </div>
-                        <div class="about-feature">
-                            <div class="about-feature-icon"><i class="fas fa-crown"></i></div>
-                            <div class="about-feature-text">
-                                <h4>Royal Ambiance</h4>
-                                <p>Luxury dining experience</p>
-                            </div>
-                        </div>
-                        <div class="about-feature">
-                            <div class="about-feature-icon"><i class="fas fa-mortar-pestle"></i></div>
-                            <div class="about-feature-text">
-                                <h4>Secret Spice Blends</h4>
-                                <p>Ancient family recipes</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <a href="#menu" onclick="scrollToSection('menu')" class="btn-primary">
-                        <i class="fas fa-book-open"></i> Explore Our Menu
+</div>
+</div>
+<div class="hero-scroll" onclick="scrollToSection('about')">
+<span class="scroll-text">Scroll Down</span>
+<div class="scroll-line"></div>
+</div>
+</section>
+<!-- Awards Banner -->
+<div class="awards-banner">
+<div class="awards-scroll" id="awardsScroll">
+<div class="awards-item"><i class="fas fa-award"></i> Best Indian Restaurant 2024</div>
+<div class="awards-item"><i class="fas fa-star"></i> Michelin Recommended</div>
+<div class="awards-item"><i class="fas fa-crown"></i> Royal Hospitality Award</div>
+<div class="awards-item"><i class="fas fa-certificate"></i> FSSAI Certified</div>
+<div class="awards-item"><i class="fas fa-trophy"></i> India's Top 50 Restaurants</div>
+<div class="awards-item"><i class="fas fa-medal"></i> Heritage Cuisine Excellence</div>
+<div class="awards-item"><i class="fas fa-award"></i> Best Indian Restaurant 2024</div>
+<div class="awards-item"><i class="fas fa-star"></i> Michelin Recommended</div>
+<div class="awards-item"><i class="fas fa-crown"></i> Royal Hospitality Award</div>
+<div class="awards-item"><i class="fas fa-certificate"></i> FSSAI Certified</div>
+<div class="awards-item"><i class="fas fa-trophy"></i> India's Top 50 Restaurants</div>
+<div class="awards-item"><i class="fas fa-medal"></i> Heritage Cuisine Excellence</div>
+</div>
+</div>
+<!-- ==================== ABOUT SECTION ==================== -->
+<section id="about">
+<div class="about-bg-pattern"></div>
+<div class="container">
+<div class="text-center" data-aos="fade-up">
+<span class="section-tag">Our Heritage</span>
+<h2 class="section-title">A Legacy of <span>Royal Flavors</span></h2>
+<div class="section-divider"><span class="divider-icon">✦</span></div>
+</div>
+<div class="about-grid">
+<div class="about-image-wrapper" data-aos="fade-right" data-aos-duration="1000">
+<img alt="Royal Spice Restaurant Interior" class="about-main-img" src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&amp;q=80"/>
+<div class="about-img-border"></div>
+<div class="about-year-badge">
+<span class="year">14+</span>
+<span class="year-text">Years of</span>
+<span class="year-text">Excellence</span>
+</div>
+</div>
+<div class="about-content" data-aos="fade-left" data-aos-duration="1000">
+<span class="section-tag">Our Story</span>
+<h2 class="section-title">Crafting Culinary <span>Masterpieces</span> Since 2010</h2>
+<p class="about-text">Royal Spice was born from a passionate vision to preserve and celebrate the majestic culinary traditions of India. Founded in the heart of New Delhi, we have spent over a decade perfecting the art of authentic Indian cuisine.</p>
+<p class="about-text">Our journey began with a simple promise — to serve every guest with the warmth of Indian hospitality and the grandeur of royal cuisine. From the fragrant kitchens of Lucknow to the spice markets of Kerala, every dish on our menu tells a story.</p>
+<div class="about-features">
+<div class="about-feature">
+<div class="about-feature-icon"><i class="fas fa-fire-alt"></i></div>
+<div class="about-feature-text">
+<h4>Authentic Tandoor</h4>
+<p>Clay oven perfection</p>
+</div>
+</div>
+<div class="about-feature">
+<div class="about-feature-icon"><i class="fas fa-leaf"></i></div>
+<div class="about-feature-text">
+<h4>Fresh Ingredients</h4>
+<p>Farm to table daily</p>
+</div>
+</div>
+<div class="about-feature">
+<div class="about-feature-icon"><i class="fas fa-crown"></i></div>
+<div class="about-feature-text">
+<h4>Royal Ambiance</h4>
+<p>Luxury dining experience</p>
+</div>
+</div>
+<div class="about-feature">
+<div class="about-feature-icon"><i class="fas fa-mortar-pestle"></i></div>
+<div class="about-feature-text">
+<h4>Secret Spice Blends</h4>
+<p>Ancient family recipes</p>
+</div>
+</div>
+</div>
+<a class="btn-primary" href="#menu" onclick="scrollToSection('menu')">
+<i class="fas fa-book-open"></i> Explore Our Menu
                     </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <div class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-card" data-aos="zoom-in" data-aos-delay="0">
-                    <div class="stat-icon"><i class="fas fa-history"></i></div>
-                    <div class="stat-number" data-count="15">0</div><span class="stat-number" style="font-size:2rem">+</span>
-                    <div class="stat-label">Years of Legacy</div>
-                </div>
-                <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="stat-icon"><i class="fas fa-utensils"></i></div>
-                    <div class="stat-number" data-count="500">0</div><span class="stat-number" style="font-size:2rem">+</span>
-                    <div class="stat-label">Signature Dishes</div>
-                </div>
-                <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="stat-icon"><i class="fas fa-smile"></i></div>
-                    <div class="stat-number" data-count="50000">0</div><span class="stat-number" style="font-size:2rem">+</span>
-                    <div class="stat-label">Happy Guests</div>
-                </div>
-                <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="stat-icon"><i class="fas fa-trophy"></i></div>
-                    <div class="stat-number" data-count="25">0</div><span class="stat-number" style="font-size:2rem">+</span>
-                    <div class="stat-label">Awards Won</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Chef Section -->
-    <div class="chef-section">
-        <div class="container">
-            <div class="chef-grid">
-                <div class="chef-image-wrapper" data-aos="fade-right" data-aos-duration="1000">
-                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&q=80" alt="Executive Chef" class="chef-image">
-                    <div class="chef-name-plate">
-                        <div class="chef-name">Chef Arjun Kapoor</div>
-                        <div class="chef-title">Executive Chef & Culinary Director</div>
-                    </div>
-                </div>
-                <div class="chef-content" data-aos="fade-left" data-aos-duration="1000">
-                    <span class="section-tag">Master Chef</span>
-                    <h2 class="section-title">The <span>Maestro</span> Behind the Magic</h2>
-                    <blockquote class="chef-quote">"Indian cuisine is not just food — it is an emotion, a memory, a celebration of life itself."</blockquote>
-                    <p class="about-text">Chef Arjun Kapoor brings over 22 years of culinary excellence to Royal Spice. Trained at the prestigious Institute of Hotel Management and refined at luxury establishments across Mumbai, London, and Dubai, Chef Arjun is the creative force behind our iconic menu.</p>
-                    <p class="about-text">His philosophy — honoring ancient recipes while embracing modern elegance — is what makes Royal Spice a destination for discerning food lovers across the globe.</p>
-                    <div class="about-features" style="margin-top:25px">
-                        <div class="about-feature">
-                            <div class="about-feature-icon"><i class="fas fa-graduation-cap"></i></div>
-                            <div class="about-feature-text"><h4>IHM Trained</h4><p>Institute of Hotel Management</p></div>
-                        </div>
-                        <div class="about-feature">
-                            <div class="about-feature-icon"><i class="fas fa-globe"></i></div>
-                            <div class="about-feature-text"><h4>International</h4><p>London, Dubai, Singapore</p></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Parallax Divider 1 -->
-    <div class="parallax-divider" style="background-image: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&q=80')">
-        <div class="parallax-divider-content">
-            <h2 data-aos="fade-up">Every Dish Tells a Story</h2>
-            <p data-aos="fade-up" data-aos-delay="200" style="font-style:italic; font-size:1.3rem">Flavors passed down through generations, served with modern elegance</p>
-            <a href="#menu" onclick="scrollToSection('menu')" class="btn-primary" data-aos="fade-up" data-aos-delay="400" style="margin-top:30px">
-                <i class="fas fa-utensils"></i> Discover Our Menu
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<div class="stats-section">
+<div class="container">
+<div class="stats-grid">
+<div class="stat-card" data-aos="zoom-in" data-aos-delay="0">
+<div class="stat-icon"><i class="fas fa-history"></i></div>
+<div class="stat-number" data-count="15">0</div><span class="stat-number" style="font-size:2rem">+</span>
+<div class="stat-label">Years of Legacy</div>
+</div>
+<div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+<div class="stat-icon"><i class="fas fa-utensils"></i></div>
+<div class="stat-number" data-count="500">0</div><span class="stat-number" style="font-size:2rem">+</span>
+<div class="stat-label">Signature Dishes</div>
+</div>
+<div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+<div class="stat-icon"><i class="fas fa-smile"></i></div>
+<div class="stat-number" data-count="50000">0</div><span class="stat-number" style="font-size:2rem">+</span>
+<div class="stat-label">Happy Guests</div>
+</div>
+<div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+<div class="stat-icon"><i class="fas fa-trophy"></i></div>
+<div class="stat-number" data-count="25">0</div><span class="stat-number" style="font-size:2rem">+</span>
+<div class="stat-label">Awards Won</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Chef Section -->
+<div class="chef-section">
+<div class="container">
+<div class="chef-grid">
+<div class="chef-image-wrapper" data-aos="fade-right" data-aos-duration="1000">
+<img alt="Executive Chef" class="chef-image" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&amp;q=80"/>
+<div class="chef-name-plate">
+<div class="chef-name">Chef Arjun Kapoor</div>
+<div class="chef-title">Executive Chef &amp; Culinary Director</div>
+</div>
+</div>
+<div class="chef-content" data-aos="fade-left" data-aos-duration="1000">
+<span class="section-tag">Master Chef</span>
+<h2 class="section-title">The <span>Maestro</span> Behind the Magic</h2>
+<blockquote class="chef-quote">"Indian cuisine is not just food — it is an emotion, a memory, a celebration of life itself."</blockquote>
+<p class="about-text">Chef Arjun Kapoor brings over 22 years of culinary excellence to Royal Spice. Trained at the prestigious Institute of Hotel Management and refined at luxury establishments across Mumbai, London, and Dubai, Chef Arjun is the creative force behind our iconic menu.</p>
+<p class="about-text">His philosophy — honoring ancient recipes while embracing modern elegance — is what makes Royal Spice a destination for discerning food lovers across the globe.</p>
+<div class="about-features" style="margin-top:25px">
+<div class="about-feature">
+<div class="about-feature-icon"><i class="fas fa-graduation-cap"></i></div>
+<div class="about-feature-text"><h4>IHM Trained</h4><p>Institute of Hotel Management</p></div>
+</div>
+<div class="about-feature">
+<div class="about-feature-icon"><i class="fas fa-globe"></i></div>
+<div class="about-feature-text"><h4>International</h4><p>London, Dubai, Singapore</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Parallax Divider 1 -->
+<div class="parallax-divider" style="background-image: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1920&amp;q=80')">
+<div class="parallax-divider-content">
+<h2 data-aos="fade-up">Every Dish Tells a Story</h2>
+<p data-aos="fade-up" data-aos-delay="200" style="font-style:italic; font-size:1.3rem">Flavors passed down through generations, served with modern elegance</p>
+<a class="btn-primary" data-aos="fade-up" data-aos-delay="400" href="#menu" onclick="scrollToSection('menu')" style="margin-top:30px">
+<i class="fas fa-utensils"></i> Discover Our Menu
             </a>
-        </div>
-    </div>
-
-    <!-- ==================== MENU SECTION ==================== -->
-    <section id="menu">
-        <div class="container">
-            <div class="text-center" data-aos="fade-up">
-                <span class="section-tag">Culinary Delights</span>
-                <h2 class="section-title">Our Royal <span>Menu</span></h2>
-                <div class="section-divider"><span class="divider-icon">✦</span></div>
-                <p class="section-subtitle">A curated selection of India's finest culinary traditions, prepared with the freshest ingredients and the most authentic spices.</p>
-            </div>
-
-            <div class="menu-filter" data-aos="fade-up">
-                <button class="filter-btn active" data-filter="all">All Items</button>
-                <button class="filter-btn" data-filter="starters">Starters</button>
-                <button class="filter-btn" data-filter="main">Main Course</button>
-                <button class="filter-btn" data-filter="biryani">Biryani & Rice</button>
-                <button class="filter-btn" data-filter="tandoor">Tandoor & Breads</button>
-                <button class="filter-btn" data-filter="desserts">Desserts</button>
-                <button class="filter-btn" data-filter="beverages">Beverages</button>
-            </div>
-
-            <div class="menu-grid" id="menuGrid">
-
-                <!-- STARTERS HEADER -->
-                <div class="menu-category-title" data-category-header="starters">
-                    <i class="fas fa-fire-alt" style="color:var(--gold);font-size:1.4rem"></i> Starters
+</div>
+</div>
+<!-- ==================== MENU SECTION ==================== -->
+<section id="menu">
+<div class="container">
+<div class="text-center" data-aos="fade-up">
+<span class="section-tag">Culinary Delights</span>
+<h2 class="section-title">Our Royal <span>Menu</span></h2>
+<div class="section-divider"><span class="divider-icon">✦</span></div>
+<p class="section-subtitle">A curated selection of India's finest culinary traditions, prepared with the freshest ingredients and the most authentic spices.</p>
+</div>
+<div class="menu-filter" data-aos="fade-up">
+<button class="filter-btn active" data-filter="all">All Items</button>
+<button class="filter-btn" data-filter="starters">Starters</button>
+<button class="filter-btn" data-filter="main">Main Course</button>
+<button class="filter-btn" data-filter="biryani">Biryani &amp; Rice</button>
+<button class="filter-btn" data-filter="tandoor">Tandoor &amp; Breads</button>
+<button class="filter-btn" data-filter="desserts">Desserts</button>
+<button class="filter-btn" data-filter="beverages">Beverages</button>
+</div>
+<div class="menu-grid" id="menuGrid">
+<!-- STARTERS HEADER -->
+<div class="menu-category-title" data-category-header="starters">
+<i class="fas fa-fire-alt" style="color:var(--gold);font-size:1.4rem"></i> Starters
                 </div>
-
-                <!-- Starters -->
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="0">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Paneer Tikka" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Paneer Tikka</span>
-                            <span class="menu-card-price">₹349</span>
-                        </div>
-                        <p class="menu-card-desc">Marinated cottage cheese grilled to perfection in a traditional clay tandoor with aromatic spices</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Chef's Pick</span>
-                        </div>
-                    </div>
+<!-- Starters -->
+<div class="menu-card" data-aos="fade-up" data-aos-delay="0" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Paneer Tikka" class="menu-card-image" src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Paneer Tikka</span>
+<span class="menu-card-price">₹349</span>
+</div>
+<p class="menu-card-desc">Marinated cottage cheese grilled to perfection in a traditional clay tandoor with aromatic spices</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Chef's Pick</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Paneer Tikka', 349)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Paneer Tikka', 349)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="50" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Chicken Malai Tikka" class="menu-card-image" src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Chicken Malai Tikka</span>
+<span class="menu-card-price">₹399</span>
+</div>
+<p class="menu-card-desc">Tender chicken pieces marinated in a creamy cashew paste, grilled to succulent perfection</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Best Seller</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Chicken Malai Tikka', 399)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Chicken Malai Tikka', 399)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="100" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Samosa" class="menu-card-image" src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Samosa (2 pcs)</span>
+<span class="menu-card-price">₹149</span>
+</div>
+<p class="menu-card-desc">Golden crispy pastry triangles filled with spiced potato and pea filling, served with chutneys</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Classic</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Samosa (2 pcs)', 149)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Samosa (2 pcs)', 149)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="150" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Fish Amritsari" class="menu-card-image" src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Fish Amritsari</span>
+<span class="menu-card-price">₹449</span>
+</div>
+<p class="menu-card-desc">Crispy battered fish marinated with traditional Amritsari spices, fried to golden perfection</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Punjab Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Fish Amritsari', 449)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Fish Amritsari', 449)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="200" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Hara Bhara Kebab" class="menu-card-image" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Hara Bhara Kebab</span>
+<span class="menu-card-price">₹249</span>
+</div>
+<p class="menu-card-desc">Vibrant green patties made from fresh spinach, peas and paneer, pan-fried until crisp</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Hara Bhara Kebab', 249)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Hara Bhara Kebab', 249)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="250" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Mutton Seekh Kebab" class="menu-card-image" src="https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Mutton Seekh Kebab</span>
+<span class="menu-card-price">₹499</span>
+</div>
+<p class="menu-card-desc">Minced mutton blended with herbs and spices, skewered and grilled in the royal tandoor</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Mughlai</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Mutton Seekh Kebab', 499)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Mutton Seekh Kebab', 499)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="300" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Prawn Koliwada" class="menu-card-image" src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Prawn Koliwada</span>
+<span class="menu-card-price">₹549</span>
+</div>
+<p class="menu-card-desc">Juicy prawns coated in a spicy batter, deep-fried in authentic Mumbai Koli style</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Mumbai Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Prawn Koliwada', 549)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Prawn Koliwada', 549)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="350" data-category="starters">
+<div class="menu-card-img-wrapper">
+<img alt="Dahi Ke Kebab" class="menu-card-image" src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Dahi Ke Kebab</span>
+<span class="menu-card-price">₹279</span>
+</div>
+<p class="menu-card-desc">Melt-in-mouth kebabs prepared from hung curd and paneer, delicately spiced and pan-fried</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Dahi Ke Kebab', 279)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Dahi Ke Kebab', 279)">Add to Cart</button></div>
+</div>
+</div>
+<!-- MAIN COURSE HEADER -->
+<div class="menu-category-title" data-category-header="main">
+<i class="fas fa-bowl-food" style="color:var(--gold);font-size:1.4rem"></i> Main Course
                 </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="50">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80" alt="Chicken Malai Tikka" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Chicken Malai Tikka</span>
-                            <span class="menu-card-price">₹399</span>
-                        </div>
-                        <p class="menu-card-desc">Tender chicken pieces marinated in a creamy cashew paste, grilled to succulent perfection</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Best Seller</span>
-                        </div>
-                    </div>
+<!-- Main Course -->
+<div class="menu-card" data-aos="fade-up" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Butter Chicken" class="menu-card-image" src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Butter Chicken</span>
+<span class="menu-card-price">₹449</span>
+</div>
+<p class="menu-card-desc">India's most iconic dish — tender chicken in a velvety, creamy tomato-based curry sauce</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Signature</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Butter Chicken', 449)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Butter Chicken', 449)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="50" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Dal Makhani" class="menu-card-image" src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Dal Makhani</span>
+<span class="menu-card-price">₹299</span>
+</div>
+<p class="menu-card-desc">Slow-cooked overnight black lentils simmered with butter, cream and a medley of spices</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Dal Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Dal Makhani', 299)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Dal Makhani', 299)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="100" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Paneer Butter Masala" class="menu-card-image" src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Paneer Butter Masala</span>
+<span class="menu-card-price">₹349</span>
+</div>
+<p class="menu-card-desc">Rich and creamy paneer curry in a luscious tomato-onion gravy with aromatic spices</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Favourite</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Paneer Butter Masala', 349)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Paneer Butter Masala', 349)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="150" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Rogan Josh" class="menu-card-image" src="https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Rogan Josh</span>
+<span class="menu-card-price">₹549</span>
+</div>
+<p class="menu-card-desc">Kashmiri slow-cooked lamb curry with intense aromatic spices and rich deep-red gravy</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Kashmir Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Rogan Josh', 549)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Rogan Josh', 549)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="200" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Palak Paneer" class="menu-card-image" src="https://images.unsplash.com/photo-1618449840665-9ed506d73a34?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Palak Paneer</span>
+<span class="menu-card-price">₹329</span>
+</div>
+<p class="menu-card-desc">Fresh cottage cheese cubes in a vibrant, velvety spinach gravy seasoned with cumin and garam masala</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Palak Paneer', 329)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Palak Paneer', 329)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="250" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Chicken Chettinad" class="menu-card-image" src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Chicken Chettinad</span>
+<span class="menu-card-price">₹449</span>
+</div>
+<p class="menu-card-desc">Bold and fiery South Indian chicken curry with Chettinad's legendary 17-spice masala blend</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">South Indian</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Chicken Chettinad', 449)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Chicken Chettinad', 449)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="300" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Prawn Malabari" class="menu-card-image" src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Prawn Malabari</span>
+<span class="menu-card-price">₹599</span>
+</div>
+<p class="menu-card-desc">Succulent prawns cooked in a fragrant coconut-based Malabar curry from the Kerala coast</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Kerala Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Prawn Malabari', 599)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Prawn Malabari', 599)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="350" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Kadhai Paneer" class="menu-card-image" src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Kadhai Paneer</span>
+<span class="menu-card-price">₹339</span>
+</div>
+<p class="menu-card-desc">Paneer and bell peppers stir-fried in an iron wok with bold kadhai masala and tomatoes</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Kadhai Paneer', 339)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Kadhai Paneer', 339)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="400" data-category="main">
+<div class="menu-card-img-wrapper">
+<img alt="Lamb Nihari" class="menu-card-image" src="https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Lamb Nihari</span>
+<span class="menu-card-price">₹649</span>
+</div>
+<p class="menu-card-desc">The crown jewel of Lucknowi cuisine — slow-cooked lamb stew with nihari masala and bone marrow</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Awadhi Royal</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Lamb Nihari', 649)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Lamb Nihari', 649)">Add to Cart</button></div>
+</div>
+</div>
+<!-- BIRYANI HEADER -->
+<div class="menu-category-title" data-category-header="biryani">
+<i class="fas fa-bowl-rice" style="color:var(--gold);font-size:1.4rem"></i> Biryani &amp; Rice
                 </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="100">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80" alt="Samosa" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Samosa (2 pcs)</span>
-                            <span class="menu-card-price">₹149</span>
-                        </div>
-                        <p class="menu-card-desc">Golden crispy pastry triangles filled with spiced potato and pea filling, served with chutneys</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Classic</span>
-                        </div>
-                    </div>
+<div class="menu-card" data-aos="fade-up" data-category="biryani">
+<div class="menu-card-img-wrapper">
+<img alt="Hyderabadi Biryani" class="menu-card-image" src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Hyderabadi Chicken Dum Biryani</span>
+<span class="menu-card-price">₹449</span>
+</div>
+<p class="menu-card-desc">Aromatic basmati rice slow-cooked with tender chicken in the authentic Hyderabadi dum style</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Chef's Choice</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Hyderabadi Chicken Dum Biryani', 449)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Hyderabadi Chicken Dum Biryani', 449)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="50" data-category="biryani">
+<div class="menu-card-img-wrapper">
+<img alt="Lucknowi Mutton Biryani" class="menu-card-image" src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Lucknowi Mutton Biryani</span>
+<span class="menu-card-price">₹549</span>
+</div>
+<p class="menu-card-desc">Royal Awadhi-style goat biryani with saffron, fried onions, and precious whole spices</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Royal Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Lucknowi Mutton Biryani', 549)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Lucknowi Mutton Biryani', 549)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="100" data-category="biryani">
+<div class="menu-card-img-wrapper">
+<img alt="Vegetable Biryani" class="menu-card-image" src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Vegetable Biryani</span>
+<span class="menu-card-price">₹349</span>
+</div>
+<p class="menu-card-desc">Fragrant basmati rice cooked with fresh seasonal vegetables, saffron and whole aromatics</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Vegetable Biryani', 349)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Vegetable Biryani', 349)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="150" data-category="biryani">
+<div class="menu-card-img-wrapper">
+<img alt="Prawn Biryani" class="menu-card-image" src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Prawn Biryani</span>
+<span class="menu-card-price">₹599</span>
+</div>
+<p class="menu-card-desc">Coastal-style fragrant biryani with juicy prawns, coconut and a special biryani masala</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
+<span class="menu-card-tag">Coastal</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Prawn Biryani', 599)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Prawn Biryani', 599)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="200" data-category="biryani">
+<div class="menu-card-img-wrapper">
+<img alt="Jeera Rice" class="menu-card-image" src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Jeera Rice</span>
+<span class="menu-card-price">₹199</span>
+</div>
+<p class="menu-card-desc">Premium aged basmati rice tempered with cumin seeds, ghee and fresh coriander</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Jeera Rice', 199)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Jeera Rice', 199)">Add to Cart</button></div>
+</div>
+</div>
+<!-- TANDOOR HEADER -->
+<div class="menu-category-title" data-category-header="tandoor">
+<i class="fas fa-fire" style="color:var(--gold);font-size:1.4rem"></i> Tandoor &amp; Breads
                 </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="150">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80" alt="Fish Amritsari" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Fish Amritsari</span>
-                            <span class="menu-card-price">₹449</span>
-                        </div>
-                        <p class="menu-card-desc">Crispy battered fish marinated with traditional Amritsari spices, fried to golden perfection</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Punjab Special</span>
-                        </div>
-                    </div>
+<div class="menu-card" data-aos="fade-up" data-category="tandoor">
+<div class="menu-card-img-wrapper">
+<img alt="Butter Naan" class="menu-card-image" src="https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Butter Naan</span>
+<span class="menu-card-price">₹79</span>
+</div>
+<p class="menu-card-desc">Soft, pillowy leavened bread baked in tandoor, brushed generously with golden butter</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Essential</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Butter Naan', 79)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Butter Naan', 79)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="50" data-category="tandoor">
+<div class="menu-card-img-wrapper">
+<img alt="Garlic Naan" class="menu-card-image" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Garlic Naan</span>
+<span class="menu-card-price">₹99</span>
+</div>
+<p class="menu-card-desc">Classic naan topped generously with roasted garlic, fresh cilantro and herbed butter</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Most Ordered</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Garlic Naan', 99)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Garlic Naan', 99)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="100" data-category="tandoor">
+<div class="menu-card-img-wrapper">
+<img alt="Laccha Paratha" class="menu-card-image" src="https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Laccha Paratha</span>
+<span class="menu-card-price">₹89</span>
+</div>
+<p class="menu-card-desc">Beautifully layered flaky whole-wheat paratha with a crisp exterior and soft flaky interior</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Laccha Paratha', 89)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Laccha Paratha', 89)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="150" data-category="tandoor">
+<div class="menu-card-img-wrapper">
+<img alt="Cheese Naan" class="menu-card-image" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Cheese Naan</span>
+<span class="menu-card-price">₹119</span>
+</div>
+<p class="menu-card-desc">Indulgent naan bread stuffed with molten cheese, baked to golden perfection in the tandoor</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Indulgent</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Cheese Naan', 119)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Cheese Naan', 119)">Add to Cart</button></div>
+</div>
+</div>
+<!-- DESSERTS HEADER -->
+<div class="menu-category-title" data-category-header="desserts">
+<i class="fas fa-ice-cream" style="color:var(--gold);font-size:1.4rem"></i> Desserts
                 </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="200">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&q=80" alt="Hara Bhara Kebab" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Hara Bhara Kebab</span>
-                            <span class="menu-card-price">₹249</span>
-                        </div>
-                        <p class="menu-card-desc">Vibrant green patties made from fresh spinach, peas and paneer, pan-fried until crisp</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
+<div class="menu-card" data-aos="fade-up" data-category="desserts">
+<div class="menu-card-img-wrapper">
+<img alt="Gulab Jamun" class="menu-card-image" src="https://images.unsplash.com/photo-1571167366136-b57e0b5a66df?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Gulab Jamun (2 pcs)</span>
+<span class="menu-card-price">₹199</span>
+</div>
+<p class="menu-card-desc">Soft khoya dumplings deep-fried and soaked in rose-scented sugar syrup with cardamom</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Classic</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Gulab Jamun (2 pcs)', 199)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Gulab Jamun (2 pcs)', 199)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="50" data-category="desserts">
+<div class="menu-card-img-wrapper">
+<img alt="Rasmalai" class="menu-card-image" src="https://images.unsplash.com/photo-1559181567-c3190278d72a?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Rasmalai</span>
+<span class="menu-card-price">₹249</span>
+</div>
+<p class="menu-card-desc">Delicate chenna discs served in chilled saffron-infused milk with pistachios and rose petals</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Bengali Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Rasmalai', 249)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Rasmalai', 249)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="100" data-category="desserts">
+<div class="menu-card-img-wrapper">
+<img alt="Kulfi Falooda" class="menu-card-image" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Kulfi Falooda</span>
+<span class="menu-card-price">₹279</span>
+</div>
+<p class="menu-card-desc">Traditional Indian ice cream on a stick served with rose falooda vermicelli and basil seeds</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Summer Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Kulfi Falooda', 279)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Kulfi Falooda', 279)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="150" data-category="desserts">
+<div class="menu-card-img-wrapper">
+<img alt="Gajar Ka Halwa" class="menu-card-image" src="https://images.unsplash.com/photo-1571167366136-b57e0b5a66df?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Gajar Ka Halwa</span>
+<span class="menu-card-price">₹229</span>
+</div>
+<p class="menu-card-desc">Slow-cooked grated carrots in pure ghee with full-fat milk, sugar and a garnish of dry fruits</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Winter Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Gajar Ka Halwa', 229)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Gajar Ka Halwa', 229)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="200" data-category="desserts">
+<div class="menu-card-img-wrapper">
+<img alt="Shahi Tukda" class="menu-card-image" src="https://images.unsplash.com/photo-1559181567-c3190278d72a?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Shahi Tukda</span>
+<span class="menu-card-price">₹259</span>
+</div>
+<p class="menu-card-desc">Royal bread pudding fried in ghee, drenched in rabri cream with saffron and silver leaf</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Mughal Royal</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Shahi Tukda', 259)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Shahi Tukda', 259)">Add to Cart</button></div>
+</div>
+</div>
+<!-- BEVERAGES HEADER -->
+<div class="menu-category-title" data-category-header="beverages">
+<i class="fas fa-glass-water" style="color:var(--gold);font-size:1.4rem"></i> Beverages
                 </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="250">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=500&q=80" alt="Mutton Seekh Kebab" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Mutton Seekh Kebab</span>
-                            <span class="menu-card-price">₹499</span>
-                        </div>
-                        <p class="menu-card-desc">Minced mutton blended with herbs and spices, skewered and grilled in the royal tandoor</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Mughlai</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="300">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80" alt="Prawn Koliwada" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Prawn Koliwada</span>
-                            <span class="menu-card-price">₹549</span>
-                        </div>
-                        <p class="menu-card-desc">Juicy prawns coated in a spicy batter, deep-fried in authentic Mumbai Koli style</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Mumbai Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="starters" data-aos="fade-up" data-aos-delay="350">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&q=80" alt="Dahi Ke Kebab" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Dahi Ke Kebab</span>
-                            <span class="menu-card-price">₹279</span>
-                        </div>
-                        <p class="menu-card-desc">Melt-in-mouth kebabs prepared from hung curd and paneer, delicately spiced and pan-fried</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MAIN COURSE HEADER -->
-                <div class="menu-category-title" data-category-header="main">
-                    <i class="fas fa-bowl-food" style="color:var(--gold);font-size:1.4rem"></i> Main Course
-                </div>
-
-                <!-- Main Course -->
-                <div class="menu-card" data-category="main" data-aos="fade-up">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=80" alt="Butter Chicken" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Butter Chicken</span>
-                            <span class="menu-card-price">₹449</span>
-                        </div>
-                        <p class="menu-card-desc">India's most iconic dish — tender chicken in a velvety, creamy tomato-based curry sauce</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Signature</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="50">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500&q=80" alt="Dal Makhani" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Dal Makhani</span>
-                            <span class="menu-card-price">₹299</span>
-                        </div>
-                        <p class="menu-card-desc">Slow-cooked overnight black lentils simmered with butter, cream and a medley of spices</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Dal Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="100">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500&q=80" alt="Paneer Butter Masala" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Paneer Butter Masala</span>
-                            <span class="menu-card-price">₹349</span>
-                        </div>
-                        <p class="menu-card-desc">Rich and creamy paneer curry in a luscious tomato-onion gravy with aromatic spices</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Favourite</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="150">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=500&q=80" alt="Rogan Josh" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Rogan Josh</span>
-                            <span class="menu-card-price">₹549</span>
-                        </div>
-                        <p class="menu-card-desc">Kashmiri slow-cooked lamb curry with intense aromatic spices and rich deep-red gravy</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Kashmir Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="200">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1618449840665-9ed506d73a34?w=500&q=80" alt="Palak Paneer" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Palak Paneer</span>
-                            <span class="menu-card-price">₹329</span>
-                        </div>
-                        <p class="menu-card-desc">Fresh cottage cheese cubes in a vibrant, velvety spinach gravy seasoned with cumin and garam masala</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="250">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=500&q=80" alt="Chicken Chettinad" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Chicken Chettinad</span>
-                            <span class="menu-card-price">₹449</span>
-                        </div>
-                        <p class="menu-card-desc">Bold and fiery South Indian chicken curry with Chettinad's legendary 17-spice masala blend</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">South Indian</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="300">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=500&q=80" alt="Prawn Malabari" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Prawn Malabari</span>
-                            <span class="menu-card-price">₹599</span>
-                        </div>
-                        <p class="menu-card-desc">Succulent prawns cooked in a fragrant coconut-based Malabar curry from the Kerala coast</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Kerala Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="350">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=500&q=80" alt="Kadhai Paneer" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Kadhai Paneer</span>
-                            <span class="menu-card-price">₹339</span>
-                        </div>
-                        <p class="menu-card-desc">Paneer and bell peppers stir-fried in an iron wok with bold kadhai masala and tomatoes</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="main" data-aos="fade-up" data-aos-delay="400">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=500&q=80" alt="Lamb Nihari" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Lamb Nihari</span>
-                            <span class="menu-card-price">₹649</span>
-                        </div>
-                        <p class="menu-card-desc">The crown jewel of Lucknowi cuisine — slow-cooked lamb stew with nihari masala and bone marrow</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Awadhi Royal</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BIRYANI HEADER -->
-                <div class="menu-category-title" data-category-header="biryani">
-                    <i class="fas fa-bowl-rice" style="color:var(--gold);font-size:1.4rem"></i> Biryani & Rice
-                </div>
-
-                <div class="menu-card" data-category="biryani" data-aos="fade-up">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&q=80" alt="Hyderabadi Biryani" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Hyderabadi Chicken Dum Biryani</span>
-                            <span class="menu-card-price">₹449</span>
-                        </div>
-                        <p class="menu-card-desc">Aromatic basmati rice slow-cooked with tender chicken in the authentic Hyderabadi dum style</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Chef's Choice</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="biryani" data-aos="fade-up" data-aos-delay="50">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=500&q=80" alt="Lucknowi Mutton Biryani" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Lucknowi Mutton Biryani</span>
-                            <span class="menu-card-price">₹549</span>
-                        </div>
-                        <p class="menu-card-desc">Royal Awadhi-style goat biryani with saffron, fried onions, and precious whole spices</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Royal Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="biryani" data-aos="fade-up" data-aos-delay="100">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80" alt="Vegetable Biryani" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Vegetable Biryani</span>
-                            <span class="menu-card-price">₹349</span>
-                        </div>
-                        <p class="menu-card-desc">Fragrant basmati rice cooked with fresh seasonal vegetables, saffron and whole aromatics</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="biryani" data-aos="fade-up" data-aos-delay="150">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=500&q=80" alt="Prawn Biryani" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Prawn Biryani</span>
-                            <span class="menu-card-price">₹599</span>
-                        </div>
-                        <p class="menu-card-desc">Coastal-style fragrant biryani with juicy prawns, coconut and a special biryani masala</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot non-veg"></div> Non-Veg</div>
-                            <span class="menu-card-tag">Coastal</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="biryani" data-aos="fade-up" data-aos-delay="200">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1596797038530-2c107229654b?w=500&q=80" alt="Jeera Rice" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Jeera Rice</span>
-                            <span class="menu-card-price">₹199</span>
-                        </div>
-                        <p class="menu-card-desc">Premium aged basmati rice tempered with cumin seeds, ghee and fresh coriander</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TANDOOR HEADER -->
-                <div class="menu-category-title" data-category-header="tandoor">
-                    <i class="fas fa-fire" style="color:var(--gold);font-size:1.4rem"></i> Tandoor & Breads
-                </div>
-
-                <div class="menu-card" data-category="tandoor" data-aos="fade-up">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80" alt="Butter Naan" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Butter Naan</span>
-                            <span class="menu-card-price">₹79</span>
-                        </div>
-                        <p class="menu-card-desc">Soft, pillowy leavened bread baked in tandoor, brushed generously with golden butter</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Essential</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="tandoor" data-aos="fade-up" data-aos-delay="50">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80" alt="Garlic Naan" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Garlic Naan</span>
-                            <span class="menu-card-price">₹99</span>
-                        </div>
-                        <p class="menu-card-desc">Classic naan topped generously with roasted garlic, fresh cilantro and herbed butter</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Most Ordered</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="tandoor" data-aos="fade-up" data-aos-delay="100">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?w=500&q=80" alt="Laccha Paratha" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Laccha Paratha</span>
-                            <span class="menu-card-price">₹89</span>
-                        </div>
-                        <p class="menu-card-desc">Beautifully layered flaky whole-wheat paratha with a crisp exterior and soft flaky interior</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="tandoor" data-aos="fade-up" data-aos-delay="150">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=80" alt="Cheese Naan" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Cheese Naan</span>
-                            <span class="menu-card-price">₹119</span>
-                        </div>
-                        <p class="menu-card-desc">Indulgent naan bread stuffed with molten cheese, baked to golden perfection in the tandoor</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Indulgent</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DESSERTS HEADER -->
-                <div class="menu-category-title" data-category-header="desserts">
-                    <i class="fas fa-ice-cream" style="color:var(--gold);font-size:1.4rem"></i> Desserts
-                </div>
-
-                <div class="menu-card" data-category="desserts" data-aos="fade-up">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1571167366136-b57e0b5a66df?w=500&q=80" alt="Gulab Jamun" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Gulab Jamun (2 pcs)</span>
-                            <span class="menu-card-price">₹199</span>
-                        </div>
-                        <p class="menu-card-desc">Soft khoya dumplings deep-fried and soaked in rose-scented sugar syrup with cardamom</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Classic</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="desserts" data-aos="fade-up" data-aos-delay="50">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1559181567-c3190278d72a?w=500&q=80" alt="Rasmalai" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Rasmalai</span>
-                            <span class="menu-card-price">₹249</span>
-                        </div>
-                        <p class="menu-card-desc">Delicate chenna discs served in chilled saffron-infused milk with pistachios and rose petals</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Bengali Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="desserts" data-aos="fade-up" data-aos-delay="100">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=80" alt="Kulfi Falooda" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Kulfi Falooda</span>
-                            <span class="menu-card-price">₹279</span>
-                        </div>
-                        <p class="menu-card-desc">Traditional Indian ice cream on a stick served with rose falooda vermicelli and basil seeds</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Summer Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="desserts" data-aos="fade-up" data-aos-delay="150">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1571167366136-b57e0b5a66df?w=500&q=80" alt="Gajar Ka Halwa" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Gajar Ka Halwa</span>
-                            <span class="menu-card-price">₹229</span>
-                        </div>
-                        <p class="menu-card-desc">Slow-cooked grated carrots in pure ghee with full-fat milk, sugar and a garnish of dry fruits</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Winter Special</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="desserts" data-aos="fade-up" data-aos-delay="200">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1559181567-c3190278d72a?w=500&q=80" alt="Shahi Tukda" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Shahi Tukda</span>
-                            <span class="menu-card-price">₹259</span>
-                        </div>
-                        <p class="menu-card-desc">Royal bread pudding fried in ghee, drenched in rabri cream with saffron and silver leaf</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Mughal Royal</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BEVERAGES HEADER -->
-                <div class="menu-category-title" data-category-header="beverages">
-                    <i class="fas fa-glass-water" style="color:var(--gold);font-size:1.4rem"></i> Beverages
-                </div>
-
-                <div class="menu-card" data-category="beverages" data-aos="fade-up">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80" alt="Mango Lassi" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Mango Lassi</span>
-                            <span class="menu-card-price">₹179</span>
-                        </div>
-                        <p class="menu-card-desc">Thick and creamy Alphonso mango blended with chilled yogurt, cardamom and a touch of saffron</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Summer Favourite</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="beverages" data-aos="fade-up" data-aos-delay="50">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&q=80" alt="Masala Chai" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Masala Chai</span>
-                            <span class="menu-card-price">₹99</span>
-                        </div>
-                        <p class="menu-card-desc">Aromatic Indian spiced tea brewed with ginger, cardamom, cinnamon and fresh mint leaves</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Indian Classic</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="beverages" data-aos="fade-up" data-aos-delay="100">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1497534446932-c925b458314e?w=500&q=80" alt="Rose Sherbet" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Rose Sherbet</span>
-                            <span class="menu-card-price">₹149</span>
-                        </div>
-                        <p class="menu-card-desc">Chilled traditional rose-flavored drink with gulkand, sabja seeds and a hint of kewra water</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-card" data-category="beverages" data-aos="fade-up" data-aos-delay="150">
-                    <div class="menu-card-img-wrapper">
-                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&q=80" alt="Thandai" class="menu-card-image">
-                        <div class="menu-card-overlay"></div>
-                    </div>
-                    <div class="menu-card-body">
-                        <div class="menu-card-header">
-                            <span class="menu-card-name">Thandai</span>
-                            <span class="menu-card-price">₹199</span>
-                        </div>
-                        <p class="menu-card-desc">Royal spiced milk drink with almonds, pistachios, fennel, rose petals and saffron</p>
-                        <div class="menu-card-footer">
-                            <div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
-                            <span class="menu-card-tag">Festival Special</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- end menu-grid -->
-        </div>
-    </section>
-
-    <!-- Parallax Divider 2 -->
-    <div class="parallax-divider" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80')">
-        <div class="parallax-divider-content">
-            <h2 data-aos="fade-up" class="shimmer-text">Private Dining Available</h2>
-            <p data-aos="fade-up" data-aos-delay="200">Host your special celebrations in our exclusive private dining rooms</p>
-            <a href="#reservations" onclick="scrollToSection('reservations')" class="btn-secondary" data-aos="fade-up" data-aos-delay="400" style="margin-top:30px; color:var(--gold); border-color:var(--gold)">
-                <i class="fas fa-calendar-check"></i> Make a Reservation
+<div class="menu-card" data-aos="fade-up" data-category="beverages">
+<div class="menu-card-img-wrapper">
+<img alt="Mango Lassi" class="menu-card-image" src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Mango Lassi</span>
+<span class="menu-card-price">₹179</span>
+</div>
+<p class="menu-card-desc">Thick and creamy Alphonso mango blended with chilled yogurt, cardamom and a touch of saffron</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Summer Favourite</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Mango Lassi', 179)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Mango Lassi', 179)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="50" data-category="beverages">
+<div class="menu-card-img-wrapper">
+<img alt="Masala Chai" class="menu-card-image" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Masala Chai</span>
+<span class="menu-card-price">₹99</span>
+</div>
+<p class="menu-card-desc">Aromatic Indian spiced tea brewed with ginger, cardamom, cinnamon and fresh mint leaves</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Indian Classic</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Masala Chai', 99)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Masala Chai', 99)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="100" data-category="beverages">
+<div class="menu-card-img-wrapper">
+<img alt="Rose Sherbet" class="menu-card-image" src="https://images.unsplash.com/photo-1497534446932-c925b458314e?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Rose Sherbet</span>
+<span class="menu-card-price">₹149</span>
+</div>
+<p class="menu-card-desc">Chilled traditional rose-flavored drink with gulkand, sabja seeds and a hint of kewra water</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Rose Sherbet', 149)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Rose Sherbet', 149)">Add to Cart</button></div>
+</div>
+</div>
+<div class="menu-card" data-aos="fade-up" data-aos-delay="150" data-category="beverages">
+<div class="menu-card-img-wrapper">
+<img alt="Thandai" class="menu-card-image" src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=500&amp;q=80"/>
+<div class="menu-card-overlay"></div>
+</div>
+<div class="menu-card-body">
+<div class="menu-card-header">
+<span class="menu-card-name">Thandai</span>
+<span class="menu-card-price">₹199</span>
+</div>
+<p class="menu-card-desc">Royal spiced milk drink with almonds, pistachios, fennel, rose petals and saffron</p>
+<div class="menu-card-footer">
+<div class="food-indicator"><div class="food-dot veg"></div> Vegetarian</div>
+<span class="menu-card-tag">Festival Special</span>
+</div><div class="menu-card-actions"><button class="btn-buy-now" onclick="buyNow('Thandai', 199)">Buy Now</button><button class="btn-add-cart" onclick="addToCart('Thandai', 199)">Add to Cart</button></div>
+</div>
+</div>
+</div><!-- end menu-grid -->
+</div>
+</section>
+<!-- Parallax Divider 2 -->
+<div class="parallax-divider" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&amp;q=80')">
+<div class="parallax-divider-content">
+<h2 class="shimmer-text" data-aos="fade-up">Private Dining Available</h2>
+<p data-aos="fade-up" data-aos-delay="200">Host your special celebrations in our exclusive private dining rooms</p>
+<a class="btn-secondary" data-aos="fade-up" data-aos-delay="400" href="#reservations" onclick="scrollToSection('reservations')" style="margin-top:30px; color:var(--gold); border-color:var(--gold)">
+<i class="fas fa-calendar-check"></i> Make a Reservation
             </a>
-        </div>
-    </div>
-
-    <!-- ==================== GALLERY SECTION ==================== -->
-    <section id="gallery">
-        <div class="container">
-            <div class="text-center" data-aos="fade-up">
-                <span class="section-tag">Visual Journey</span>
-                <h2 class="section-title">A Glimpse of <span>Royal Spice</span></h2>
-                <div class="section-divider"><span class="divider-icon">✦</span></div>
-                <p class="section-subtitle">Step inside our world of flavors, elegance, and warmth. Each image tells the story of our passion for perfect cuisine.</p>
-            </div>
-
-            <div class="gallery-filter" data-aos="fade-up">
-                <button class="filter-btn active" data-gallery="all">All</button>
-                <button class="filter-btn" data-gallery="food">Food</button>
-                <button class="filter-btn" data-gallery="interior">Interior</button>
-                <button class="filter-btn" data-gallery="events">Events</button>
-            </div>
-
-            <div class="gallery-grid" id="galleryGrid">
-                <div class="gallery-item large" data-gallery-cat="food" data-aos="zoom-in">
-                    <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=900&q=80" alt="Indian Feast" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>The Royal Feast</h4><span>Food • Signature</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="interior" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Restaurant Interior" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Royal Dining Hall</h4><span>Interior • Main Hall</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item tall" data-gallery-cat="interior" data-aos="zoom-in" data-aos-delay="150">
-                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Elegant Interior" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Candlelit Ambiance</h4><span>Interior • Romantic</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="food" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&q=80" alt="Butter Chicken" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Butter Chicken</h4><span>Food • Signature Dish</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="food" data-aos="zoom-in" data-aos-delay="250">
-                    <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&q=80" alt="Biryani" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Dum Biryani</h4><span>Food • Royal Heritage</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="events" data-aos="zoom-in" data-aos-delay="300">
-                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80" alt="Events" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Corporate Events</h4><span>Events • Private Dining</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="food" data-aos="zoom-in" data-aos-delay="350">
-                    <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&q=80" alt="Paneer Tikka" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Paneer Tikka</h4><span>Food • Starters</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="interior" data-aos="zoom-in" data-aos-delay="400">
-                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Bar Area" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>The Royal Bar</h4><span>Interior • Bar & Lounge</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-
-                <div class="gallery-item" data-gallery-cat="events" data-aos="zoom-in" data-aos-delay="450">
-                    <img src="https://images.unsplash.com/photo-1496337589254-7e19d01cec44?w=600&q=80" alt="Wedding Events" class="gallery-img">
-                    <div class="gallery-overlay">
-                        <div class="gallery-info"><h4>Wedding Celebrations</h4><span>Events • Special Occasions</span></div>
-                    </div>
-                    <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></span>
-        <img src="" alt="Gallery Image" id="lightboxImg">
-    </div>
-
-    <!-- ==================== RESERVATIONS SECTION ==================== -->
-    <section id="reservations">
-        <div class="container">
-            <div class="text-center" data-aos="fade-up">
-                <span class="section-tag">Reserve Your Table</span>
-                <h2 class="section-title">Book a <span>Royal Experience</span></h2>
-                <div class="section-divider"><span class="divider-icon">✦</span></div>
-                <p class="section-subtitle">Reserve your table for an unforgettable dining experience. We recommend booking in advance for weekends and special occasions.</p>
-            </div>
-
-            <div class="reservations-grid">
-                <div class="reservation-form-wrapper" data-aos="fade-right" data-aos-duration="1000">
-                    <div id="reservationFormWrapper">
-                        <h3 style="font-family:var(--font-heading);font-size:1.5rem;color:var(--gold);margin-bottom:30px">
-                            <i class="fas fa-calendar-check" style="margin-right:10px"></i> Make a Reservation
+</div>
+</div>
+<!-- ==================== GALLERY SECTION ==================== -->
+<section id="gallery">
+<div class="container">
+<div class="text-center" data-aos="fade-up">
+<span class="section-tag">Visual Journey</span>
+<h2 class="section-title">A Glimpse of <span>Royal Spice</span></h2>
+<div class="section-divider"><span class="divider-icon">✦</span></div>
+<p class="section-subtitle">Step inside our world of flavors, elegance, and warmth. Each image tells the story of our passion for perfect cuisine.</p>
+</div>
+<div class="gallery-filter" data-aos="fade-up">
+<button class="filter-btn active" data-gallery="all">All</button>
+<button class="filter-btn" data-gallery="food">Food</button>
+<button class="filter-btn" data-gallery="interior">Interior</button>
+<button class="filter-btn" data-gallery="events">Events</button>
+</div>
+<div class="gallery-grid" id="galleryGrid">
+<div class="gallery-item large" data-aos="zoom-in" data-gallery-cat="food">
+<img alt="Indian Feast" class="gallery-img" src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=900&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>The Royal Feast</h4><span>Food • Signature</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="100" data-gallery-cat="interior">
+<img alt="Restaurant Interior" class="gallery-img" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Royal Dining Hall</h4><span>Interior • Main Hall</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item tall" data-aos="zoom-in" data-aos-delay="150" data-gallery-cat="interior">
+<img alt="Elegant Interior" class="gallery-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Candlelit Ambiance</h4><span>Interior • Romantic</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="200" data-gallery-cat="food">
+<img alt="Butter Chicken" class="gallery-img" src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Butter Chicken</h4><span>Food • Signature Dish</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="250" data-gallery-cat="food">
+<img alt="Biryani" class="gallery-img" src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Dum Biryani</h4><span>Food • Royal Heritage</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="300" data-gallery-cat="events">
+<img alt="Events" class="gallery-img" src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Corporate Events</h4><span>Events • Private Dining</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="350" data-gallery-cat="food">
+<img alt="Paneer Tikka" class="gallery-img" src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Paneer Tikka</h4><span>Food • Starters</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="400" data-gallery-cat="interior">
+<img alt="Bar Area" class="gallery-img" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>The Royal Bar</h4><span>Interior • Bar &amp; Lounge</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+<div class="gallery-item" data-aos="zoom-in" data-aos-delay="450" data-gallery-cat="events">
+<img alt="Wedding Events" class="gallery-img" src="https://images.unsplash.com/photo-1496337589254-7e19d01cec44?w=600&amp;q=80"/>
+<div class="gallery-overlay">
+<div class="gallery-info"><h4>Wedding Celebrations</h4><span>Events • Special Occasions</span></div>
+</div>
+<div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+<span class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></span>
+<img alt="Gallery Image" id="lightboxImg" src=""/>
+</div>
+<!-- ==================== RESERVATIONS SECTION ==================== -->
+<section id="reservations">
+<div class="container">
+<div class="text-center" data-aos="fade-up">
+<span class="section-tag">Reserve Your Table</span>
+<h2 class="section-title">Book a <span>Royal Experience</span></h2>
+<div class="section-divider"><span class="divider-icon">✦</span></div>
+<p class="section-subtitle">Reserve your table for an unforgettable dining experience. We recommend booking in advance for weekends and special occasions.</p>
+</div>
+<div class="reservations-grid">
+<div class="reservation-form-wrapper" data-aos="fade-right" data-aos-duration="1000">
+<div id="reservationFormWrapper">
+<h3 style="font-family:var(--font-heading);font-size:1.5rem;color:var(--gold);margin-bottom:30px">
+<i class="fas fa-calendar-check" style="margin-right:10px"></i> Make a Reservation
                         </h3>
-                        <form id="reservationForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Full Name</label>
-                                    <input type="text" placeholder="Your full name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Email Address</label>
-                                    <input type="email" placeholder="your@email.com" required>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="tel" placeholder="+91 98765 43210" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Number of Guests</label>
-                                    <select required>
-                                        <option value="">Select guests</option>
-                                        <option>1 Guest</option>
-                                        <option>2 Guests</option>
-                                        <option>3 Guests</option>
-                                        <option>4 Guests</option>
-                                        <option>5 Guests</option>
-                                        <option>6 Guests</option>
-                                        <option>7-10 Guests</option>
-                                        <option>10+ Guests (Private Dining)</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Preferred Date</label>
-                                    <input type="date" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Preferred Time</label>
-                                    <select required>
-                                        <option value="">Select time</option>
-                                        <option>12:00 PM</option>
-                                        <option>12:30 PM</option>
-                                        <option>1:00 PM</option>
-                                        <option>1:30 PM</option>
-                                        <option>2:00 PM</option>
-                                        <option>7:00 PM</option>
-                                        <option>7:30 PM</option>
-                                        <option>8:00 PM</option>
-                                        <option>8:30 PM</option>
-                                        <option>9:00 PM</option>
-                                        <option>9:30 PM</option>
-                                        <option>10:00 PM</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Occasion</label>
-                                <select>
-                                    <option value="">Select occasion (optional)</option>
-                                    <option>Birthday Celebration</option>
-                                    <option>Anniversary Dinner</option>
-                                    <option>Business Lunch/Dinner</option>
-                                    <option>Wedding Proposal</option>
-                                    <option>Family Gathering</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Special Requests</label>
-                                <textarea placeholder="Any dietary requirements, special arrangements, or special requests..."></textarea>
-                            </div>
-                            <button type="submit" class="btn-primary reservation-submit">
-                                <i class="fas fa-calendar-check"></i> Confirm Reservation
+<form id="reservationForm">
+<div class="form-row">
+<div class="form-group">
+<label>Full Name</label>
+<input placeholder="Your full name" required="" type="text"/>
+</div>
+<div class="form-group">
+<label>Email Address</label>
+<input placeholder="your@email.com" required="" type="email"/>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Phone Number</label>
+<input placeholder="+91 98765 43210" required="" type="tel"/>
+</div>
+<div class="form-group">
+<label>Number of Guests</label>
+<select required="">
+<option value="">Select guests</option>
+<option>1 Guest</option>
+<option>2 Guests</option>
+<option>3 Guests</option>
+<option>4 Guests</option>
+<option>5 Guests</option>
+<option>6 Guests</option>
+<option>7-10 Guests</option>
+<option>10+ Guests (Private Dining)</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Preferred Date</label>
+<input required="" type="date"/>
+</div>
+<div class="form-group">
+<label>Preferred Time</label>
+<select required="">
+<option value="">Select time</option>
+<option>12:00 PM</option>
+<option>12:30 PM</option>
+<option>1:00 PM</option>
+<option>1:30 PM</option>
+<option>2:00 PM</option>
+<option>7:00 PM</option>
+<option>7:30 PM</option>
+<option>8:00 PM</option>
+<option>8:30 PM</option>
+<option>9:00 PM</option>
+<option>9:30 PM</option>
+<option>10:00 PM</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label>Occasion</label>
+<select>
+<option value="">Select occasion (optional)</option>
+<option>Birthday Celebration</option>
+<option>Anniversary Dinner</option>
+<option>Business Lunch/Dinner</option>
+<option>Wedding Proposal</option>
+<option>Family Gathering</option>
+<option>Other</option>
+</select>
+</div>
+<div class="form-group">
+<label>Special Requests</label>
+<textarea placeholder="Any dietary requirements, special arrangements, or special requests..."></textarea>
+</div>
+<button class="btn-primary reservation-submit" type="submit">
+<i class="fas fa-calendar-check"></i> Confirm Reservation
                             </button>
-                        </form>
-                    </div>
-
-                    <div class="form-success" id="formSuccess">
-                        <i class="fas fa-check-circle"></i>
-                        <h3 style="font-family:var(--font-heading);font-size:1.6rem;color:var(--white);margin-bottom:15px">Reservation Confirmed!</h3>
-                        <p style="color:var(--gray-light);line-height:1.8">Thank you for choosing Royal Spice. We have received your reservation and our team will contact you shortly to confirm all details.</p>
-                        <p style="color:var(--gold);margin-top:20px;font-style:italic">We look forward to welcoming you with the warmth of royal hospitality.</p>
-                    </div>
-                </div>
-
-                <div class="reservation-info" data-aos="fade-left" data-aos-duration="1000">
-                    <div class="info-card">
-                        <div class="info-card-icon"><i class="fas fa-utensils"></i></div>
-                        <h3>Private Dining</h3>
-                        <p>Experience an intimate dining journey in our exclusive private rooms. Perfect for romantic dinners, business meetings, and special celebrations. Available for 2 to 20 guests with personalized menu options.</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-card-icon"><i class="fas fa-glass-cheers"></i></div>
-                        <h3>Events & Celebrations</h3>
-                        <p>Host unforgettable events at Royal Spice — from intimate anniversaries to lavish corporate dinners. Our expert event team ensures a seamless, grand experience from décor to cuisine. Contact us for custom event packages.</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-card-icon"><i class="fas fa-clock"></i></div>
-                        <h3>Opening Hours</h3>
-                        <div class="footer-hours" style="margin-top:10px">
-                            <div class="footer-hours-item"><span>Lunch</span><span>12:00 PM – 3:30 PM</span></div>
-                            <div class="footer-hours-item"><span>Dinner</span><span>7:00 PM – 11:00 PM</span></div>
-                            <div class="footer-hours-item"><span>Sunday Brunch</span><span>11:00 AM – 3:30 PM</span></div>
+</form>
+</div>
+<div class="form-success" id="formSuccess">
+<i class="fas fa-check-circle"></i>
+<h3 style="font-family:var(--font-heading);font-size:1.6rem;color:var(--white);margin-bottom:15px">Reservation Confirmed!</h3>
+<p style="color:var(--gray-light);line-height:1.8">Thank you for choosing Royal Spice. We have received your reservation and our team will contact you shortly to confirm all details.</p>
+<p style="color:var(--gold);margin-top:20px;font-style:italic">We look forward to welcoming you with the warmth of royal hospitality.</p>
+</div>
+</div>
+<div class="reservation-info" data-aos="fade-left" data-aos-duration="1000">
+<div class="info-card">
+<div class="info-card-icon"><i class="fas fa-utensils"></i></div>
+<h3>Private Dining</h3>
+<p>Experience an intimate dining journey in our exclusive private rooms. Perfect for romantic dinners, business meetings, and special celebrations. Available for 2 to 20 guests with personalized menu options.</p>
+</div>
+<div class="info-card">
+<div class="info-card-icon"><i class="fas fa-glass-cheers"></i></div>
+<h3>Events &amp; Celebrations</h3>
+<p>Host unforgettable events at Royal Spice — from intimate anniversaries to lavish corporate dinners. Our expert event team ensures a seamless, grand experience from décor to cuisine. Contact us for custom event packages.</p>
+</div>
+<div class="info-card">
+<div class="info-card-icon"><i class="fas fa-clock"></i></div>
+<h3>Opening Hours</h3>
+<div class="footer-hours" style="margin-top:10px">
+<div class="footer-hours-item"><span>Lunch</span><span>12:00 PM – 3:30 PM</span></div>
+<div class="footer-hours-item"><span>Dinner</span><span>7:00 PM – 11:00 PM</span></div>
+<div class="footer-hours-item"><span>Sunday Brunch</span><span>11:00 AM – 3:30 PM</span></div>
+</div>
+<div class="hours-badge" style="margin-top:15px">
+<div class="dot"></div> Open 7 Days a Week
                         </div>
-                        <div class="hours-badge" style="margin-top:15px">
-                            <div class="dot"></div> Open 7 Days a Week
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== CONTACT SECTION ==================== -->
-    <section id="contact">
-        <div class="container">
-            <div class="text-center" data-aos="fade-up">
-                <span class="section-tag">Get in Touch</span>
-                <h2 class="section-title">Contact <span>Royal Spice</span></h2>
-                <div class="section-divider"><span class="divider-icon">✦</span></div>
-            </div>
-
-            <div class="contact-grid">
-                <div class="contact-info" data-aos="fade-right" data-aos-duration="1000">
-                    <div class="contact-info-item">
-                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-info-text">
-                            <h4>Our Location</h4>
-                            <p>42, Maharaja Road, Connaught Place<br>New Delhi – 110001, India</p>
-                        </div>
-                    </div>
-                    <div class="contact-info-item">
-                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                        <div class="contact-info-text">
-                            <h4>Call Us</h4>
-                            <a href="tel:+919876543210">+91 98765 43210</a><br>
-                            <a href="tel:+911140001234">+91 11 4000 1234</a>
-                        </div>
-                    </div>
-                    <div class="contact-info-item">
-                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-info-text">
-                            <h4>Email Us</h4>
-                            <a href="mailto:reservations@royalspice.in">reservations@royalspice.in</a><br>
-                            <a href="mailto:info@royalspice.in">info@royalspice.in</a>
-                        </div>
-                    </div>
-                    <div class="contact-info-item">
-                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
-                        <div class="contact-info-text">
-                            <h4>Opening Hours</h4>
-                            <p>Monday – Sunday<br>12:00 PM – 11:00 PM</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h4 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:15px">Follow Us</h4>
-                        <div class="social-links">
-                            <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="map-wrapper" data-aos="fade-up">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.936386767742!2d77.21695731508208!3d28.631750982418133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd37b741d057%3A0xcdee88e47393c3f1!2sConnaught+Place%2C+New+Delhi%2C+Delhi+110001!5e0!3m2!1sen!2sin!4v1612345678901!5m2!1sen!2sin"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                </div>
-
-                <div class="contact-form-wrapper" data-aos="fade-left" data-aos-duration="1000">
-                    <h3 style="font-family:var(--font-heading);font-size:1.5rem;color:var(--gold);margin-bottom:30px">
-                        <i class="fas fa-paper-plane" style="margin-right:10px"></i> Send Us a Message
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== CONTACT SECTION ==================== -->
+<section id="contact">
+<div class="container">
+<div class="text-center" data-aos="fade-up">
+<span class="section-tag">Get in Touch</span>
+<h2 class="section-title">Contact <span>Royal Spice</span></h2>
+<div class="section-divider"><span class="divider-icon">✦</span></div>
+</div>
+<div class="contact-grid">
+<div class="contact-info" data-aos="fade-right" data-aos-duration="1000">
+<div class="contact-info-item">
+<div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+<div class="contact-info-text">
+<h4>Our Location</h4>
+<p>42, Maharaja Road, Connaught Place<br/>New Delhi – 110001, India</p>
+</div>
+</div>
+<div class="contact-info-item">
+<div class="contact-icon"><i class="fas fa-phone"></i></div>
+<div class="contact-info-text">
+<h4>Call Us</h4>
+<a href="tel:+919876543210">+91 98765 43210</a><br/>
+<a href="tel:+911140001234">+91 11 4000 1234</a>
+</div>
+</div>
+<div class="contact-info-item">
+<div class="contact-icon"><i class="fas fa-envelope"></i></div>
+<div class="contact-info-text">
+<h4>Email Us</h4>
+<a href="mailto:reservations@royalspice.in">reservations@royalspice.in</a><br/>
+<a href="mailto:info@royalspice.in">info@royalspice.in</a>
+</div>
+</div>
+<div class="contact-info-item">
+<div class="contact-icon"><i class="fas fa-clock"></i></div>
+<div class="contact-info-text">
+<h4>Opening Hours</h4>
+<p>Monday – Sunday<br/>12:00 PM – 11:00 PM</p>
+</div>
+</div>
+<div>
+<h4 style="font-family:var(--font-heading);color:var(--gold);margin-bottom:15px">Follow Us</h4>
+<div class="social-links">
+<a class="social-link" href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+<a class="social-link" href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+<a class="social-link" href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+<a class="social-link" href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+</div>
+</div>
+<div class="map-wrapper" data-aos="fade-up">
+<iframe allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.936386767742!2d77.21695731508208!3d28.631750982418133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd37b741d057%3A0xcdee88e47393c3f1!2sConnaught+Place%2C+New+Delhi%2C+Delhi+110001!5e0!3m2!1sen!2sin!4v1612345678901!5m2!1sen!2sin">
+</iframe>
+</div>
+</div>
+<div class="contact-form-wrapper" data-aos="fade-left" data-aos-duration="1000">
+<h3 style="font-family:var(--font-heading);font-size:1.5rem;color:var(--gold);margin-bottom:30px">
+<i class="fas fa-paper-plane" style="margin-right:10px"></i> Send Us a Message
                     </h3>
-                    <form id="contactForm">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" placeholder="Your full name" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" placeholder="your@email.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="tel" placeholder="+91 98765 43210">
-                        </div>
-                        <div class="form-group">
-                            <label>Subject</label>
-                            <select>
-                                <option>General Inquiry</option>
-                                <option>Reservation Query</option>
-                                <option>Private Events</option>
-                                <option>Feedback</option>
-                                <option>Partnership</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Your Message</label>
-                            <textarea placeholder="How can we help you?" style="min-height:150px" required></textarea>
-                        </div>
-                        <button type="submit" class="btn-primary" style="width:100%">
-                            <i class="fas fa-paper-plane"></i> Send Message
+<form id="contactForm">
+<div class="form-group">
+<label>Full Name</label>
+<input placeholder="Your full name" required="" type="text"/>
+</div>
+<div class="form-group">
+<label>Email Address</label>
+<input placeholder="your@email.com" required="" type="email"/>
+</div>
+<div class="form-group">
+<label>Phone Number</label>
+<input placeholder="+91 98765 43210" type="tel"/>
+</div>
+<div class="form-group">
+<label>Subject</label>
+<select>
+<option>General Inquiry</option>
+<option>Reservation Query</option>
+<option>Private Events</option>
+<option>Feedback</option>
+<option>Partnership</option>
+</select>
+</div>
+<div class="form-group">
+<label>Your Message</label>
+<textarea placeholder="How can we help you?" required="" style="min-height:150px"></textarea>
+</div>
+<button class="btn-primary" style="width:100%" type="submit">
+<i class="fas fa-paper-plane"></i> Send Message
                         </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ==================== FOOTER ==================== -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <div class="footer-logo">Royal Spice</div>
-                    <div class="footer-tagline">Fine Indian Dining</div>
-                    <p class="footer-desc">Bringing the royal essence of Indian cuisine to the heart of New Delhi since 2010. Where every meal is a celebration of culture, heritage and fine gastronomy.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="footer-heading">Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
-                        <li><a href="#about" onclick="scrollToSection('about')">About Us</a></li>
-                        <li><a href="#menu" onclick="scrollToSection('menu')">Our Menu</a></li>
-                        <li><a href="#gallery" onclick="scrollToSection('gallery')">Gallery</a></li>
-                        <li><a href="#reservations" onclick="scrollToSection('reservations')">Reservations</a></li>
-                        <li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="footer-heading">Opening Hours</h4>
-                    <div class="footer-hours">
-                        <div class="footer-hours-item"><span>Monday</span><span>12PM – 11PM</span></div>
-                        <div class="footer-hours-item"><span>Tuesday</span><span>12PM – 11PM</span></div>
-                        <div class="footer-hours-item"><span>Wednesday</span><span>12PM – 11PM</span></div>
-                        <div class="footer-hours-item"><span>Thursday</span><span>12PM – 11PM</span></div>
-                        <div class="footer-hours-item"><span>Friday</span><span>12PM – 11PM</span></div>
-                        <div class="footer-hours-item"><span>Saturday</span><span>12PM – 11PM</span></div>
-                        <div class="footer-hours-item"><span>Sunday</span><span>11AM – 11PM</span></div>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="footer-heading">Newsletter</h4>
-                    <p class="footer-desc">Subscribe to our newsletter for exclusive offers, seasonal menus and culinary events.</p>
-                    <div class="newsletter-form">
-                        <input type="email" class="newsletter-input" placeholder="Enter your email">
-                        <button class="newsletter-btn" onclick="handleNewsletter(this)"><i class="fas fa-arrow-right"></i></button>
-                    </div>
-
-                    <div style="margin-top:30px">
-                        <h4 class="footer-heading">Contact</h4>
-                        <p style="color:var(--gray);font-size:0.85rem;line-height:1.8">
-                            42, Maharaja Road, Connaught Place<br>
-                            New Delhi – 110001<br>
-                            <a href="tel:+919876543210" style="color:var(--gold);text-decoration:none">+91 98765 43210</a><br>
-                            <a href="mailto:reservations@royalspice.in" style="color:var(--gold);text-decoration:none">reservations@royalspice.in</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p class="footer-copy">© 2024 <span>Royal Spice</span>. All Rights Reserved. Crafted with <span>❤</span> for Indian Cuisine.</p>
-                <div style="display:flex;gap:20px">
-                    <a href="#" style="color:var(--gray);font-size:0.8rem;text-decoration:none;transition:var(--transition)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">Privacy Policy</a>
-                    <a href="#" style="color:var(--gray);font-size:0.8rem;text-decoration:none;transition:var(--transition)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">Terms of Service</a>
-                    <a href="#" style="color:var(--gray);font-size:0.8rem;text-decoration:none;transition:var(--transition)" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">Sitemap</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Back to Top Button -->
-    <button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        <i class="fas fa-chevron-up"></i>
-    </button>
-
-    <!-- Notification Toast -->
-    <div class="notification" id="notification">
-        <div class="notification-title" id="notifTitle">✦ Royal Spice</div>
-        <div class="notification-msg" id="notifMsg">Welcome to our royal dining experience!</div>
-    </div>
-
-    <!-- AOS Library -->
-    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-
-    <script>
+</form>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== FOOTER ==================== -->
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div>
+<div class="footer-logo">Royal Spice</div>
+<div class="footer-tagline">Fine Indian Dining</div>
+<p class="footer-desc">Bringing the royal essence of Indian cuisine to the heart of New Delhi since 2010. Where every meal is a celebration of culture, heritage and fine gastronomy.</p>
+<div class="social-links">
+<a class="social-link" href="#"><i class="fab fa-instagram"></i></a>
+<a class="social-link" href="#"><i class="fab fa-facebook-f"></i></a>
+<a class="social-link" href="#"><i class="fab fa-twitter"></i></a>
+<a class="social-link" href="#"><i class="fab fa-youtube"></i></a>
+</div>
+</div>
+<div>
+<h4 class="footer-heading">Quick Links</h4>
+<ul class="footer-links">
+<li><a href="#home" onclick="scrollToSection('home')">Home</a></li>
+<li><a href="#about" onclick="scrollToSection('about')">About Us</a></li>
+<li><a href="#menu" onclick="scrollToSection('menu')">Our Menu</a></li>
+<li><a href="#gallery" onclick="scrollToSection('gallery')">Gallery</a></li>
+<li><a href="#reservations" onclick="scrollToSection('reservations')">Reservations</a></li>
+<li><a href="#contact" onclick="scrollToSection('contact')">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="footer-heading">Opening Hours</h4>
+<div class="footer-hours">
+<div class="footer-hours-item"><span>Monday</span><span>12PM – 11PM</span></div>
+<div class="footer-hours-item"><span>Tuesday</span><span>12PM – 11PM</span></div>
+<div class="footer-hours-item"><span>Wednesday</span><span>12PM – 11PM</span></div>
+<div class="footer-hours-item"><span>Thursday</span><span>12PM – 11PM</span></div>
+<div class="footer-hours-item"><span>Friday</span><span>12PM – 11PM</span></div>
+<div class="footer-hours-item"><span>Saturday</span><span>12PM – 11PM</span></div>
+<div class="footer-hours-item"><span>Sunday</span><span>11AM – 11PM</span></div>
+</div>
+</div>
+<div>
+<h4 class="footer-heading">Newsletter</h4>
+<p class="footer-desc">Subscribe to our newsletter for exclusive offers, seasonal menus and culinary events.</p>
+<div class="newsletter-form">
+<input class="newsletter-input" placeholder="Enter your email" type="email"/>
+<button class="newsletter-btn" onclick="handleNewsletter(this)"><i class="fas fa-arrow-right"></i></button>
+</div>
+<div style="margin-top:30px">
+<h4 class="footer-heading">Contact</h4>
+<p style="color:var(--gray);font-size:0.85rem;line-height:1.8">
+                            42, Maharaja Road, Connaught Place<br/>
+                            New Delhi – 110001<br/>
+<a href="tel:+919876543210" style="color:var(--gold);text-decoration:none">+91 98765 43210</a><br/>
+<a href="mailto:reservations@royalspice.in" style="color:var(--gold);text-decoration:none">reservations@royalspice.in</a>
+</p>
+</div>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2024 <span>Royal Spice</span>. All Rights Reserved. Crafted with <span>❤</span> for Indian Cuisine.</p>
+<div style="display:flex;gap:20px">
+<a href="#" onmouseout="this.style.color='var(--gray)'" onmouseover="this.style.color='var(--gold)'" style="color:var(--gray);font-size:0.8rem;text-decoration:none;transition:var(--transition)">Privacy Policy</a>
+<a href="#" onmouseout="this.style.color='var(--gray)'" onmouseover="this.style.color='var(--gold)'" style="color:var(--gray);font-size:0.8rem;text-decoration:none;transition:var(--transition)">Terms of Service</a>
+<a href="#" onmouseout="this.style.color='var(--gray)'" onmouseover="this.style.color='var(--gold)'" style="color:var(--gray);font-size:0.8rem;text-decoration:none;transition:var(--transition)">Sitemap</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Back to Top Button -->
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+<i class="fas fa-chevron-up"></i>
+</button>
+<!-- Notification Toast -->
+<div class="notification" id="notification">
+<div class="notification-title" id="notifTitle">✦ Royal Spice</div>
+<div class="notification-msg" id="notifMsg">Welcome to our royal dining experience!</div>
+</div>
+<!-- AOS Library -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
         // ==================== INITIALIZE AOS ====================
         AOS.init({
             duration: 800,
@@ -3636,5 +3802,132 @@
             });
         });
     </script>
+
+<!-- ==================== CART SIDEBAR ==================== -->
+<div class="cart-sidebar" id="cartSidebar">
+<div class="cart-header">
+<h3>Your Cart</h3>
+<button class="close-cart" onclick="toggleCart()">×</button>
+</div>
+<div class="cart-items" id="cartItems">
+<!-- Cart items will be dynamically injected here -->
+</div>
+<div class="cart-footer">
+<div class="cart-total">
+<span>Total:</span>
+<span id="cartTotalPrice">₹0</span>
+</div>
+<button class="btn-checkout" onclick="checkoutCart()">Checkout via WhatsApp <i class="fab fa-whatsapp"></i></button>
+</div>
+</div>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- ==================== CART SCRIPT ==================== -->
+    <script>
+        let cart = [];
+        
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+            document.getElementById('cartOverlay').classList.toggle('open');
+        }
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: name, price: price, quantity: 1 });
+            }
+            updateCartUI();
+            showNotification('Added to Cart', `${name} has been added to your cart.`);
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCartUI();
+        }
+
+        function changeQuantity(name, delta) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(name);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotalPrice = document.getElementById('cartTotalPrice');
+            const cartCount = document.getElementById('cart-count');
+            const mobileCartCount = document.getElementById('mobile-cart-count');
+            
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let count = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<div class="empty-cart-msg">Your cart is empty.</div>';
+            } else {
+                cart.forEach(item => {
+                    total += item.price * item.quantity;
+                    count += item.quantity;
+                    
+                    const itemHTML = `
+                        <div class="cart-item">
+                            <div class="cart-item-info">
+                                <div class="cart-item-name">${item.name}</div>
+                                <div class="cart-item-price">₹${item.price}</div>
+                            </div>
+                            <div class="cart-item-controls">
+                                <button class="qty-btn" onclick="changeQuantity('${item.name}', -1)">-</button>
+                                <span class="cart-item-qty">${item.quantity}</span>
+                                <button class="qty-btn" onclick="changeQuantity('${item.name}', 1)">+</button>
+                            </div>
+                        </div>
+                    `;
+                    cartItemsContainer.innerHTML += itemHTML;
+                });
+            }
+
+            cartTotalPrice.textContent = `₹${total}`;
+            cartCount.textContent = count;
+            if(mobileCartCount) mobileCartCount.textContent = count;
+        }
+
+        function buyNow(name, price) {
+            const message = `Hello! I would like to place a direct order for:%0A%0A1x ${name} - ₹${price}%0A%0ATotal: ₹${price}`;
+            const whatsappNumber = "919876543210"; // Replace with actual number
+            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            
+            let message = "Hello! I would like to place an order from my cart:%0A%0A";
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                message += `${item.quantity}x ${item.name} - ₹${itemTotal}%0A`;
+            });
+            
+            message += `%0ATotal Amount: ₹${total}`;
+            
+            const whatsappNumber = "919876543210"; // Replace with actual number
+            window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+        }
+        
+        // Initialize cart UI
+        document.addEventListener('DOMContentLoaded', updateCartUI);
+    </script>
+
 </body>
 </html>
